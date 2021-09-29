@@ -1,0 +1,14 @@
+com\ipn\mx\controlador\web\categorias\VerCategoria.class
+com\ipn\mx\controlador\web\TablasDeMultiplicar.class
+com\ipn\mx\modelo\dao\dto\CategoriaDTO.class
+com\ipn\mx\controlador\web\categorias\Actualizacion.class
+com\ipn\mx\modelo\dao\dto\ProductoDTO.class
+com\ipn\mx\controlador\web\producto\ProductoController.class
+com\ipn\mx\modelo\dao\ProductoDAO.class
+com\ipn\mx\modelo\entidades\Categoria.class
+com\ipn\mx\controlador\web\categorias\ActualizarCategoria.class
+com\ipn\mx\controlador\web\categorias\MostrarDatosCategoria.class
+com\ipn\mx\modelo\entidades\Producto.class
+com\ipn\mx\controlador\web\categorias\AgregarCategoria.class
+com\ipn\mx\controlador\web\categorias\EliminarCategoria.class
+com\ipn\mx\modelo\dao\CategoriaDAO.class
