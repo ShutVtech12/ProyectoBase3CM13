@@ -51,7 +51,7 @@ public class ActualizarCategoria extends HttpServlet {
             out.println("<body>");
             out.println("<div class='container' align='center'>");
             out.println("<h1>Actualizar datos de categoria</h1>");
-            out.println("<form class='row g-3' name='frmDatosAct' method='post' action='Actualizacion'>");
+            out.println("<form class='row g-3' name='frmDatosAct' method='get' action='Actualizacion'>");
             String msg ="";
             CategoriaDAO dao = new CategoriaDAO();
             CategoriaDTO dto = new CategoriaDTO();
@@ -68,15 +68,15 @@ public class ActualizarCategoria extends HttpServlet {
             if (dto != null) {
                 out.println("<div class='col-4'>");
                 out.println("<label for='inputClave' class='form-label'>Clave Categoria</label>");
-                out.println("<input type='text' name='id' class='form-control' id='inputClave' placeholder='"+num+"' disabled>");
+                out.println("<input type='text' readonly='readonly' name='inputClave' class='form-control' id='inputClave' value='"+num+"'>");
                 out.println("</div>");
                 out.println("<div class='col-md-4'>");
                 out.println("<label for='inputName' class='form-label'>Nombre</label>");
-                out.println("<input type='text' name='txtName' class='form-control' id='inputName' placeholder='"+name+"'>");
+                out.println("<input type='text' name='txtName' class='form-control' id='txtName' value='"+name+"'>");
                 out.println("</div>");
                 out.println("<div class='col-md-4'>");
                 out.println("<label for='inputDescripcion' class='form-label'>Descripción</label>");
-                out.println("<input type='text' name='txtDescripcion' class='form-control' id='inputDescripcion' placeholder='"+desc+"'>");
+                out.println("<input type='text' name='txtDescripcion' class='form-control' id='txtDescripcion' value='"+desc+"'>");
                 out.println("</div>");
             }else{
                 msg="Registro no encontrado";
@@ -86,7 +86,7 @@ public class ActualizarCategoria extends HttpServlet {
             }
             out.println("<div align='center' class='col-12'>");
             //out.println("<a href='Actualizacion?id='id.value'&txtName&txtDescripcion' class='btn btn-success'>Actualizar</a>");
-            out.println("<input type='submit' value='Enviar' name='btnEnviar'>");
+            out.println("<button type='submit' class='btn btn-primary'>Enviar</button>");
             out.println("<a class='nav-link active' aria-current='page' href='javascript: history.go(-1)'>Regresar</a>");
             out.println("</div>");
             out.println("</form>");

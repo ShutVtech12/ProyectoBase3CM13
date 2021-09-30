@@ -92,7 +92,7 @@ public class MostrarDatosCategoria extends HttpServlet {
             out.println("</div>");
             out.println("<div align='center'>");
             out.println("<a href='categoriaForm.html' class='btn btn-primary'>Agregar Categoria</a>");
-            out.println("<a class='nav-link active' aria-current='page' href='"+request.getContextPath()+"'>Regresar a la pagina principal</a>");
+            out.println("<a class='nav-link active' aria-current='page' href='https://practica3cm13.herokuapp.com/'>Regresar a la pagina principal</a>");
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");

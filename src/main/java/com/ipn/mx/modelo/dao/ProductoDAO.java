@@ -73,7 +73,7 @@ public class ProductoDAO {
             ps = conexion.prepareStatement(SQL_INSERT);
             ps.setString(1, dto.getEntidad().getNombreProducto());
             ps.setString(2, dto.getEntidad().getDescripcionProducto());
-            ps.setBigDecimal(3, dto.getEntidad().getPrecio());
+            ps.setFloat(3, dto.getEntidad().getPrecio());
             ps.setInt(4, dto.getEntidad().getExistencia());
             ps.setInt(5, dto.getEntidad().getStockMinimo());
             ps.setInt(6, dto.getEntidad().getIdCategoria());
@@ -94,7 +94,7 @@ public class ProductoDAO {
             ps = conexion.prepareStatement(SQL_UPDATE);
             ps.setString(1, dto.getEntidad().getNombreProducto());
             ps.setString(2, dto.getEntidad().getDescripcionProducto());
-            ps.setBigDecimal(3, dto.getEntidad().getPrecio());
+            ps.setFloat(3, dto.getEntidad().getPrecio());
             ps.setInt(4, dto.getEntidad().getExistencia());
             ps.setInt(5, dto.getEntidad().getStockMinimo());
             ps.setInt(6, dto.getEntidad().getIdCategoria());
@@ -131,6 +131,7 @@ public class ProductoDAO {
         ResultSet rs=null;
         try {
             ps = conexion.prepareStatement(SQL_READ);
+            ps.setInt(1,dto.getEntidad().getIdProducto());
             rs = ps.executeQuery();
             List resultados = obtenerResultados(rs);
             if(resultados.size()>0){
@@ -140,9 +141,14 @@ public class ProductoDAO {
             }
                     
         } finally {
-            if(rs!=null)rs.close();
-            if(ps!=null)ps.close();
-            if(conexion!=null)conexion.close();
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conexion != null)
+                conexion.close();
         }
     }
     
@@ -161,9 +167,14 @@ public class ProductoDAO {
             }
                     
         } finally {
-            if(rs!=null)rs.close();
-            if(ps!=null)ps.close();
-            if(conexion!=null)conexion.close();
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conexion != null)
+                conexion.close();
         }
     }
 
@@ -174,7 +185,7 @@ public class ProductoDAO {
             p.getEntidad().setIdProducto(rs.getInt("idProducto"));
             p.getEntidad().setNombreProducto(rs.getString("nombreProducto"));
             p.getEntidad().setDescripcionProducto(rs.getString("descripcionProducto"));
-            //Sp.getEntidad().setPrecio(rs.getBigDecimal("precio"));
+            p.getEntidad().setPrecio(rs.getFloat("precio"));
             p.getEntidad().setExistencia(rs.getInt("existencia"));
             p.getEntidad().setStockMinimo(rs.getInt("stockMinimo"));
             p.getEntidad().setIdCategoria(rs.getInt("idCategoria"));
@@ -187,14 +198,9 @@ public class ProductoDAO {
     public static void main(String[]args){
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();
-        dto.getEntidad().setNombreProducto("PC");
-        dto.getEntidad().setDescripcionProducto("PC de juegos");
-        dto.getEntidad().setExistencia(100);
-        //dto.getEntidad().setPrecio(1000);
-        dto.getEntidad().setStockMinimo(10);
-        dto.getEntidad().setIdCategoria(9);
+        dto.getEntidad().setIdProducto(1);
         try {
-            dao.create(dto);
+            dto = dao.read(dto);
         } catch (SQLException ex) {
             Logger.getLogger(ProductoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

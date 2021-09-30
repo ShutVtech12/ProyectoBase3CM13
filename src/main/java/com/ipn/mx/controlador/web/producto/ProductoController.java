@@ -41,6 +41,7 @@ public class ProductoController extends HttpServlet {
             throws ServletException, IOException {
         
         String accion = request.getParameter("accion");
+        //String txtNombreProducto=request.getParameter("txtNombreProducto");
         if(accion.equals("listaDeProductos")){
             listaDeProductos(request, response);
         }else{
@@ -56,7 +57,7 @@ public class ProductoController extends HttpServlet {
                         if(accion.equals("ver")){
                             verProducto(request, response);
                         }else{
-                            if(accion.equals("guardar")){
+                            if(accion.equals("guardar") || request.getParameter("txtNombreProducto")!=null){
                                 almacenarProducto(request, response);
                             }
                         }
@@ -121,33 +122,28 @@ public class ProductoController extends HttpServlet {
             out.println("<div class='container'>");
             out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
             out.println("<div class='container-fluid'>");
-            out.println("<a class='navbar-brand' href='#'>Demo</a>");
+            out.println("<a class='navbar-brand'>Menu de Productos</a>");
             out.println("<button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>");
             out.println("<span class='navbar-toggler-icon'></span>");
             out.println("</button>");
             out.println("<div class='collapse navbar-collapse' id='navbarNav'>");
             out.println("<ul class='navbar-nav'>");
             out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link active' aria-current='page' href='#'>Inicio</a>");
+            out.println("<a class='nav-link active' aria-current='page' href='https://practica3cm13.herokuapp.com/'>Inicio</a>");
             out.println("</li>");
             out.println("<li class='nav-item'>");
             out.println("<a class='nav-link' href='TablasDeMultiplicar'>Tablas de Multiplicar</a>");
             out.println("</li>");
             out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link' href='MostrarDatosCategori'>Mostrar Datos</a>");
+            out.println("<a class='nav-link' href='ProductoController?accion=listaDeProductos'>Mostrar Datos</a>");
             out.println("</li>");
             out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link' href='categoriaForm.html'>Nuevo</a>");
+            out.println("<a class='nav-link' href='ProductoController?accion=nuevo'>Nuevo</a>");
             out.println("</li>");
             out.println("</ul>");
             out.println("</div>");
             out.println("</div>");
             out.println("</nav>");
-            
-            out.println("<div>");
-            out.println("<a href='ProductoController?accion=nuevo' class='btn btn-primary'>Registrar Producto</a>");
-            out.println("</div>");
-            
             out.println("<table class='table table-stripped'");
             out.println("<thead>");
             out.println("<tr>");
@@ -170,10 +166,10 @@ public class ProductoController extends HttpServlet {
                 for (int i = 0; i < lista.size(); i++) {
                     ProductoDTO dto = (ProductoDTO) lista.get(i);
                     out.println("<tr>");
-                    out.println("<td><a href='ProductoController?accion=ver&id=" + dto.getEntidad().getIdProducto() + "' class='btn btn-warining'>" + dto.getEntidad().getIdProducto() + "</td>");
+                    out.println("<td><a href='ProductoController?accion=ver&id=" + dto.getEntidad().getIdProducto() + "' class='btn btn-warning'>" + dto.getEntidad().getIdProducto() + "</td>");
                     out.println("<td>" + dto.getEntidad().getNombreProducto() + "</td>");
                     out.println("<td>" + dto.getEntidad().getDescripcionProducto() + "</td>");
-                    out.println("<td>" + dto.getEntidad().getPrecio()+ "</td>");
+                    out.println("<td>$"+dto.getEntidad().getPrecio()+ "</td>");
                     out.println("<td>" + dto.getEntidad().getExistencia() + "</td>");
                     out.println("<td>" + dto.getEntidad().getStockMinimo() + "</td>");
                     out.println("<td>" + dto.getEntidad().getIdCategoria()+ "</td>");
@@ -187,6 +183,10 @@ public class ProductoController extends HttpServlet {
             
             out.println("</tbody>");
             out.println("</table>");
+            out.println("</div>");
+            out.println("<div align='center'>");
+            out.println("<a href='ProductoController?accion=nuevo' class='btn btn-primary'>Registrar Producto</a>");
+            out.println("<a class='nav-link active' aria-current='page' href='https://practica3cm13.herokuapp.com/'>Regresar a la pagina principal</a>");
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");
@@ -216,7 +216,7 @@ public class ProductoController extends HttpServlet {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try (PrintWriter out = response.getWriter()) {
-            out.println("<div>");
+            out.println("<div align='center'>");
             out.println(msg);
             out.println("<br/>");
             out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Lista de Productos</a>");
@@ -225,8 +225,100 @@ public class ProductoController extends HttpServlet {
         }
     }
 
-    private void actualizarProducto(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void actualizarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        ProductoDAO dao = new ProductoDAO();
+        ProductoDTO dto = new ProductoDTO();
+        //String txtNombreProducto=request.getParameter("txtNombreProducto");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Actualizar Producto</title>");
+            out.println("<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet'>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js'></script>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js'></script>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js'></script>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<div class='container' align='center'>");
+            out.println("<h1>Actualizar datos de Producto</h1>");
+            if (request.getParameter("txtNombreProducto")!=null) {
+                out.println("HOlaaaaa");
+                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
+                dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
+                dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcion"));
+                dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
+                dto.getEntidad().setExistencia(Integer.parseInt("txtExistencia"));
+                dto.getEntidad().setStockMinimo(Integer.parseInt("txtStock"));
+                dto.getEntidad().setIdCategoria(Integer.parseInt("txtClave"));
+            } else {
+                String msg = "";
+                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
+                try {
+                    //Debemos de condicionar los mensajes
+                    dto = dao.read(dto);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (dto != null) {
+                    out.println("<table class='table table-stripped'");
+                    out.println("<tr>");
+                    out.println("<th> Clave Producto </th>");
+                    out.println("<td><input type='text' id='id' name='id' readonly='readonly'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getIdProducto() + "'/></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                    out.println("<th> Nombre Producto </th>");
+                    out.println("<td><input type='text' id='txtNombreProducto' name='txtNombreProducto'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getNombreProducto()+ "'/></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                    out.println("<th> Descripcion Producto </th>");
+                    out.println("<td><input type='text' id='txtDescripcionProducto' name='txtDescripcionProducto'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getDescripcionProducto()+ "'/></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                    out.println("<th> Precio </th>");
+                    out.println("<td><input type='text' id='txtPrecio' name='txtPrecio'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getPrecio()+ "'/></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                    out.println("<th> Existencia </th>");
+                    out.println("<td><input type='text' id='txtExistencia' name='txtExistencia' step='1' min='1' max='100'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getExistencia()+ "'/></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                    out.println("<th> Stock </th>");
+                    out.println("<td><input type='text' id='txtStock' name='txtStock' min='10' max='100'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getStockMinimo()+ "'/></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                    out.println("<th> Clave Categoria </th>");
+                    out.println("<td><input type='text' id='txtClave' name='txtClave' readonly='readonly'" +
+                            "class='form-control' required='required' value='" + dto.getEntidad().getIdCategoria()+ "'/></td>");
+                    out.println("</tr>");
+                    out.println("</table>");
+                } else {
+                    msg = "Registro no encontrado";
+                    out.println("<div align='center'>");
+                    out.println("<b>" + msg + "</b>");
+                    out.println("</div>");
+                }
+                out.println("<div align='center' class='col-12'>");
+                out.println("<a class='nav-link active' href='ProductoController?id="+dto.getEntidad().getIdProducto()+
+                        "&txtNombreProducto="+dto.getEntidad().getNombreProducto()+"&txtDescripcionProducto="+
+                        dto.getEntidad().getDescripcionProducto()+"&txtPrecio="+dto.getEntidad().getPrecio()+
+                        "&txtExistencia="+dto.getEntidad().getExistencia()+"&txtStock="+dto.getEntidad().getStockMinimo()+
+                        "&txtClave="+dto.getEntidad().getIdCategoria()+"'>Enviar</a>");
+                out.println("<a class='nav-link active' aria-current='page' href='javascript: history.go(-1)'>Regresar</a>");
+                out.println("</div>");
+            }
+            out.println("</div>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     private void verProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -235,7 +327,7 @@ public class ProductoController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductoController</title>"); 
+            out.println("<title>Productos</title>"); 
             out.println("<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet'>");
             out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js'></script>");
             out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js'></script>");
@@ -243,81 +335,88 @@ public class ProductoController extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<div class='container'>");
-            out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
-            out.println("<div class='container-fluid'>");
-            out.println("<a class='navbar-brand' href='#'>Demo</a>");
-            out.println("<button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>");
-            out.println("<span class='navbar-toggler-icon'></span>");
-            out.println("</button>");
-            out.println("<div class='collapse navbar-collapse' id='navbarNav'>");
-            out.println("<ul class='navbar-nav'>");
-            out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link active' aria-current='page' href='#'>Inicio</a>");
-            out.println("</li>");
-            out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link' href='TablasDeMultiplicar'>Tablas de Multiplicar</a>");
-            out.println("</li>");
-            out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link' href='MostrarDatosCategori'>Mostrar Datos</a>");
-            out.println("</li>");
-            out.println("<li class='nav-item'>");
-            out.println("<a class='nav-link' href='categoriaForm.html'>Nuevo</a>");
-            out.println("</li>");
-            out.println("</ul>");
+            out.println("<div align='center'><h1>Datos de Producto</h1></div>");
+            String msg ="";
+            ProductoDAO dao = new ProductoDAO();
+            ProductoDTO dto = new ProductoDTO();
+            dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
+            try {
+                //Debemos de condicionar los mensajes
+                dto = dao.read(dto);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (dto != null) {
+                out.println("<table class='table table-stripped'");
+                out.println("<tr>");
+                out.println("<th> Clave Producto </th>");
+                out.println("<td>" + dto.getEntidad().getIdProducto() + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Nombre Producto </th>");
+                out.println("<td>" + dto.getEntidad().getNombreProducto() + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Descripcion Producto </th>");
+                out.println("<td>" + dto.getEntidad().getDescripcionProducto() + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Precio </th>");
+                out.println("<td>" + dto.getEntidad().getPrecio() + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Existencia </th>");
+                out.println("<td>" + dto.getEntidad().getExistencia() + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Stock </th>");
+                out.println("<td>" + dto.getEntidad().getStockMinimo() + "</td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Clave Categoria </th>");
+                out.println("<td>" + dto.getEntidad().getIdCategoria() + "</td>");
+                out.println("</tr>");
+                out.println("</table>");
+            }else{
+                msg="Registro no encontrado";
+                out.println("<div align='center'>");
+                out.println("<b>" + msg + "</b>");
+                out.println("</div>");
+            }
             out.println("</div>");
-            out.println("</div>");
-            out.println("</nav>");
-            out.println("<table class='table table-stripped'");
-            out.println("<tr>");
-            out.println("<th> Clave Producto </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<th> Nombre Producto </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<th> Descripcion Producto </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<th> Precio </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<th> Existencia </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<th> Stock </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<th> Categoria Producto </th>");
-            out.println("<td>"+ 1 +"</td>");
-            out.println("</tr>");
-            out.println("</table>");
-            out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Listado</a>");
+            out.println("<div align='center'>");
+            out.println("<a class='nav-link active' aria-current='page' href='ProductoController?accion=listaDeProductos'>Regresar</a>");
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    private void almacenarProducto(HttpServletRequest request, HttpServletResponse response) {
+    private void almacenarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String msg="";
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();
         dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
         dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
         dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
-        dto.getEntidad().setPrecio(new BigDecimal(request.getParameter("txtPrecio")));
+        dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
         dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStockMinimo")));
         dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClaveCategoria")));
         try {
             dao.create(dto);
+            msg="Nuevo Producto Guardado";
         } catch (SQLException ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<div align='center'>");
+            out.println(msg);
+            out.println("<br/>");
+            out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Lista de Productos</a>");
+            out.println("</div>");
+            
+        }
+        
         
     }
 

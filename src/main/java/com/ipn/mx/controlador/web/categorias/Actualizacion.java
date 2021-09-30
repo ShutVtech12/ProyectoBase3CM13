@@ -56,14 +56,12 @@ public class Actualizacion extends HttpServlet {
             CategoriaDTO dto = new CategoriaDTO();
             dto.getEntidad().setNombreCategoria(request.getParameter("txtName"));
             dto.getEntidad().setDescripcionCategoria(request.getParameter("txtDescripcion"));
-            dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("id")));
-            out.println(dto);
+            dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("inputClave")));
             try {
                 dao.update(dto);
                 msg = "Categoria Actualizada";
             }catch (SQLException ex) {
                 Logger.getLogger(ActualizarCategoria.class.getName()).log(Level.SEVERE, null, ex);
-                msg = "JAJAJAJ";
             }
             out.println("<div align='center'>");
             out.println("<b>" + msg + "</b>");
