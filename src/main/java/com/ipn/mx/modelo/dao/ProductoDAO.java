@@ -34,21 +34,6 @@ public class ProductoDAO {
     //5.- Generar data source
     
     private Connection conexion;
-    /*private void conectar() {
-        String user = "postgres";
-        String pwd = "root";
-        String url = "jdbc:postgresql://localhost:5432/3CM13";
-        String pgDriver = "org.postgresql.Driver";
-        try {
-            Class.forName(pgDriver);
-            conexion = DriverManager.getConnection(url, user, pwd);
-        //Solo trabjamos con 2 excepciones:
-        //-Que no encuentre el paquete de pgDriver
-        //-Algun dato esta mal y no puede
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
     
     private void conectar() {
         String user = "aucaodstqhrqzl";
