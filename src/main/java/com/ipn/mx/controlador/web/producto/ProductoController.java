@@ -413,6 +413,16 @@ public class ProductoController extends HttpServlet {
         }
         
         try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Producto</title>");
+            out.println("<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet'>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js'></script>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js'></script>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js'></script>");
+            out.println("</head>");
+            out.println("<body>");
             out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
             out.println("<strong>"+msg+"</strong>");
             out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
@@ -421,6 +431,8 @@ public class ProductoController extends HttpServlet {
             out.println("<br/>");
             out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Lista de Productos</a>");
             out.println("</div>");
+            out.println("</body>");
+            out.println("</html>");
             
         }
     }
