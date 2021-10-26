@@ -55,8 +55,12 @@ public class EliminarCategoria extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(EliminarCategoria.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
+            out.println("<strong>"+msg+"</strong>");
+            out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+            out.println("</div>");
             out.println("<div align='center'>");
-            out.println("<b>"+ msg +"</b>");
             out.println("<p>");
             out.println("<a href='MostrarDatosCategoria'>Listado de Categorias</a>");
             out.println("</p>");

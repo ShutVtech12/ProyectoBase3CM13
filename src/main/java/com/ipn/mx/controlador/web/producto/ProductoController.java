@@ -413,8 +413,11 @@ public class ProductoController extends HttpServlet {
         }
         
         try (PrintWriter out = response.getWriter()) {
+            out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
+            out.println("<strong>"+msg+"</strong>");
+            out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+            out.println("</div>");
             out.println("<div align='center'>");
-            out.println(msg);
             out.println("<br/>");
             out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Lista de Productos</a>");
             out.println("</div>");
