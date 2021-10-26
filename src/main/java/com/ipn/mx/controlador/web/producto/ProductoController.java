@@ -112,7 +112,7 @@ public class ProductoController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductoController</title>"); 
+            out.println("<title>Producto</title>"); 
             out.println("<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet'>");
             out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js'></script>");
             out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js'></script>");
@@ -243,78 +243,65 @@ public class ProductoController extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<div class='container' align='center'>");
+            out.println("<form method='post' action='ProductoController?accion=guardar&txtal=1'>");
             out.println("<h1>Actualizar datos de Producto</h1>");
-            if (request.getParameter("txtNombreProducto")!=null) {
-                out.println("HOlaaaaa");
-                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
-                dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
-                dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcion"));
-                dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
-                dto.getEntidad().setExistencia(Integer.parseInt("txtExistencia"));
-                dto.getEntidad().setStockMinimo(Integer.parseInt("txtStock"));
-                dto.getEntidad().setIdCategoria(Integer.parseInt("txtClave"));
+            String msg = "";
+            dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
+            try {
+                //Debemos de condicionar los mensajes
+                dto = dao.read(dto);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (dto != null) {
+                out.println("<table class='table table-stripped'");
+                out.println("<tr>");
+                out.println("<th> Clave Producto </th>");
+                out.println("<td><input type='text' id='id' name='id' readonly='readonly'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getIdProducto() + "'/></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Nombre Producto </th>");
+                out.println("<td><input type='text' id='txtNombreProducto' name='txtNombreProducto'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getNombreProducto() + "'/></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Descripcion Producto </th>");
+                out.println("<td><input type='text' id='txtDescripcionProducto' name='txtDescripcionProducto'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getDescripcionProducto() + "'/></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Precio </th>");
+                out.println("<td><input type='text' id='txtPrecio' name='txtPrecio'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getPrecio() + "'/></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Existencia </th>");
+                out.println("<td><input type='text' id='txtExistencia' name='txtExistencia' step='1' min='1' max='100'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getExistencia() + "'/></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Stock </th>");
+                out.println("<td><input type='text' id='txtStock' name='txtStock' min='10' max='100'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getStockMinimo() + "'/></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<th> Clave Categoria </th>");
+                out.println("<td><input type='text' id='txtClave' name='txtClave' readonly='readonly'"
+                        + "class='form-control' required='required' value='" + dto.getEntidad().getIdCategoria() + "'/></td>");
+                out.println("</tr>");
+                out.println("</table>");
             } else {
-                String msg = "";
-                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
-                try {
-                    //Debemos de condicionar los mensajes
-                    dto = dao.read(dto);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (dto != null) {
-                    out.println("<table class='table table-stripped'");
-                    out.println("<tr>");
-                    out.println("<th> Clave Producto </th>");
-                    out.println("<td><input type='text' id='id' name='id' readonly='readonly'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getIdProducto() + "'/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<th> Nombre Producto </th>");
-                    out.println("<td><input type='text' id='txtNombreProducto' name='txtNombreProducto'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getNombreProducto()+ "'/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<th> Descripcion Producto </th>");
-                    out.println("<td><input type='text' id='txtDescripcionProducto' name='txtDescripcionProducto'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getDescripcionProducto()+ "'/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<th> Precio </th>");
-                    out.println("<td><input type='text' id='txtPrecio' name='txtPrecio'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getPrecio()+ "'/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<th> Existencia </th>");
-                    out.println("<td><input type='text' id='txtExistencia' name='txtExistencia' step='1' min='1' max='100'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getExistencia()+ "'/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<th> Stock </th>");
-                    out.println("<td><input type='text' id='txtStock' name='txtStock' min='10' max='100'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getStockMinimo()+ "'/></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<th> Clave Categoria </th>");
-                    out.println("<td><input type='text' id='txtClave' name='txtClave' readonly='readonly'" +
-                            "class='form-control' required='required' value='" + dto.getEntidad().getIdCategoria()+ "'/></td>");
-                    out.println("</tr>");
-                    out.println("</table>");
-                } else {
-                    msg = "Registro no encontrado";
-                    out.println("<div align='center'>");
-                    out.println("<b>" + msg + "</b>");
-                    out.println("</div>");
-                }
-                out.println("<div align='center' class='col-12'>");
-                out.println("<a class='nav-link active' href='ProductoController?id="+dto.getEntidad().getIdProducto()+
-                        "&txtNombreProducto="+dto.getEntidad().getNombreProducto()+"&txtDescripcionProducto="+
-                        dto.getEntidad().getDescripcionProducto()+"&txtPrecio="+dto.getEntidad().getPrecio()+
-                        "&txtExistencia="+dto.getEntidad().getExistencia()+"&txtStock="+dto.getEntidad().getStockMinimo()+
-                        "&txtClave="+dto.getEntidad().getIdCategoria()+"'>Enviar</a>");
-                out.println("<a class='nav-link active' aria-current='page' href='javascript: history.go(-1)'>Regresar</a>");
+                msg = "Registro no encontrado";
+                out.println("<div align='center'>");
+                out.println("<b>" + msg + "</b>");
                 out.println("</div>");
             }
+            out.println("<div align='center' class='col-12'>");
+            out.println("<button type='submit' class='btn btn-primary' name='btnEnviar'>Enviar</button>");
+            out.println("<a class='nav-link active' aria-current='page' href='javascript: history.go(-1)'>Regresar</a>");
+            out.println("</div>");
+            out.println("</form>");
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");
@@ -396,18 +383,35 @@ public class ProductoController extends HttpServlet {
         String msg="";
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();
-        dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
-        dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
-        dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
-        dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
-        dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStockMinimo")));
-        dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClaveCategoria")));
-        try {
-            dao.create(dto);
-            msg="Nuevo Producto Guardado";
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        if (Integer.parseInt(request.getParameter("txtal"))==1) {
+                msg="Registro Actualizado";
+                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
+                dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
+                dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
+                dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
+                dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
+                dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStock")));
+                dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClave")));
+            try {
+                dao.update(dto);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
+            dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
+            dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
+            dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
+            dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStockMinimo")));
+            dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClaveCategoria")));
+            try {
+                dao.create(dto);
+                msg = "Nuevo Producto Guardado";
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
         try (PrintWriter out = response.getWriter()) {
             out.println("<div align='center'>");
             out.println(msg);
@@ -416,8 +420,6 @@ public class ProductoController extends HttpServlet {
             out.println("</div>");
             
         }
-        
-        
     }
 
 }
