@@ -70,6 +70,7 @@ public class Actualizacion extends HttpServlet {
             out.println("<div align='center'>");
             out.println("<a href='MostrarDatosCategoria'> Listado de Categorias</a>");
             out.println("</div>");
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
         }

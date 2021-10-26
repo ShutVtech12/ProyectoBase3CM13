@@ -49,6 +49,7 @@ public class EliminarCategoria extends HttpServlet {
             out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js'></script>");            
             out.println("</head>");
             out.println("<body>");
+            out.println("<div class='container' align='center'>");
             CategoriaDAO dao = new CategoriaDAO();
             CategoriaDTO dto = new CategoriaDTO();
             String msg="";

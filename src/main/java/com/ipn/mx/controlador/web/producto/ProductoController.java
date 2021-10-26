@@ -206,22 +206,34 @@ public class ProductoController extends HttpServlet {
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();
         dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
-        String msg="";
-        response.setContentType("text/html;charset=UTF-8");
-        try {
-            dao.delete(dto);
-            msg="Registro Eliminado";
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String msg = "";
         try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Producto</title>");
+            out.println("<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet'>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js'></script>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js'></script>");
+            out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js'></script>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<div class='container' align='center'>");
+            try {
+                dao.delete(dto);
+                msg = "Registro Eliminado";
+                out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
+                out.println("<strong>" + msg + "</strong>");
+                out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+                out.println("</div>");
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             out.println("<div align='center'>");
-            out.println(msg);
             out.println("<br/>");
             out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Lista de Productos</a>");
             out.println("</div>");
-            
+
         }
     }
 
@@ -383,35 +395,6 @@ public class ProductoController extends HttpServlet {
         String msg="";
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();
-        if (Integer.parseInt(request.getParameter("txtal"))==1) {
-                msg="Registro Actualizado";
-                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
-                dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
-                dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
-                dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
-                dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
-                dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStock")));
-                dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClave")));
-            try {
-                dao.update(dto);
-            } catch (SQLException ex) {
-                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
-            dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
-            dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
-            dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
-            dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStockMinimo")));
-            dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClaveCategoria")));
-            try {
-                dao.create(dto);
-                msg = "Nuevo Producto Guardado";
-            } catch (SQLException ex) {
-                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -423,17 +406,57 @@ public class ProductoController extends HttpServlet {
             out.println("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js'></script>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
-            out.println("<strong>"+msg+"</strong>");
-            out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
-            out.println("</div>");
+            out.println("<div class='container' align='center'>");
+            if (Integer.parseInt(request.getParameter("txtal")) == 1) {
+                dto.getEntidad().setIdProducto(Integer.parseInt(request.getParameter("id")));
+                dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
+                dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
+                dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
+                dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
+                dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStock")));
+                dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClave")));
+                try {
+                    dao.update(dto);
+                    msg = "Registro Actualizado";
+                    out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
+                    out.println("<strong>" + msg + "</strong>");
+                    out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+                    out.println("</div>");
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                dto.getEntidad().setNombreProducto(request.getParameter("txtNombreProducto"));
+                dto.getEntidad().setDescripcionProducto(request.getParameter("txtDescripcionProducto"));
+                dto.getEntidad().setExistencia(Integer.parseInt(request.getParameter("txtExistencia")));
+                dto.getEntidad().setPrecio(Float.parseFloat(request.getParameter("txtPrecio")));
+                dto.getEntidad().setStockMinimo(Integer.parseInt(request.getParameter("txtStockMinimo")));
+                dto.getEntidad().setIdCategoria(Integer.parseInt(request.getParameter("txtClaveCategoria")));
+                try {
+                    dao.create(dto);
+                    msg = "Nuevo Producto Guardado";
+                    out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
+                    out.println("<strong>" + msg + "</strong>");
+                    out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+                    out.println("</div>");
+                } catch (SQLException ex) {
+                    msg = "Producto no guardado. ERROR: Categoria Inexistente";
+                    out.println("<div class='alert alert-warning alert-dismissible fade show' role='alert'>");
+                    out.println("<strong>" + msg + "</strong>");
+                    out.println("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+                    out.println("</div>");
+                    Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
             out.println("<div align='center'>");
             out.println("<br/>");
             out.println("<a href='ProductoController?accion=listaDeProductos' class='btn btn-success'>Lista de Productos</a>");
             out.println("</div>");
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
-            
+
         }
     }
 
