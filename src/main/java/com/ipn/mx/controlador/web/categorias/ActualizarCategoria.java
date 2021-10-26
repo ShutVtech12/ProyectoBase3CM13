@@ -95,11 +95,11 @@ public class ActualizarCategoria extends HttpServlet {
                 out.println("</div>");
                 out.println("<div class='col-md-4'>");
                 out.println("<label for='inputName' class='form-label'>Nombre</label>");
-                out.println("<input type='text' name='txtName' class='form-control' id='txtName' value='"+name+"'>");
+                out.println("<input type='text' name='txtName' class='form-control' id='txtName' required='required' value='"+name+"'>");
                 out.println("</div>");
                 out.println("<div class='col-md-4'>");
                 out.println("<label for='inputDescripcion' class='form-label'>Descripción</label>");
-                out.println("<input type='text' name='txtDescripcion' class='form-control' id='txtDescripcion' value='"+desc+"'>");
+                out.println("<input type='text' name='txtDescripcion' class='form-control' id='txtDescripcion' required='required' value='"+desc+"'>");
                 out.println("</div>");
             }else{
                 msg="Registro no encontrado";
